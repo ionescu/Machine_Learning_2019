@@ -1,0 +1,37 @@
+* Administrative matters
+
+- course materials [[https://github.com/ionescu/Machine_Learning_2019][on GitHub]]
+  - lectures notes will generally be available after the lecture, though drafts may appear before
+  - exercises will also be posted on GitHub
+
+- register for CATS points
+  - assessment: homework to be handed in a the next meeting (or sent to me by email, or to PPWeekly)
+  - every piece of homework is pass or fail
+
+- course takes place Saturdays 10:00-12:30 at Ewert House
+  - exceptions: *no class* on the 4th of May and 1st of June!
+
+- main text: /Machine Learning/, Tom Mitchell, 1997
+  - there are a couple of copies available in the ContEd library
+  - you can buy it used for under 15 GBP on [[https://www.amazon.co.uk/gp/offer-listing/1259096955/ref=sr_1_3_olp?keywords=mitchell+machine+learning&qid=1555784813&s=gateway&sr=8-3][Amazon]]
+  - but you should be able to complete the course using only the lecture notes
+
+* Introduction
+
+- types of learning:
+  - by rote
+  - conditioning
+  - from experience
+  - any others?
+
+- reasons for /machine learning/:
+  - programming is hard, it would be better if computers learnt by themselves
+  - to study human learning (and intelligence)
+    - perhaps we could then improve our own abilities to learn and to teach
+
+- *Definition* (Mitchell, p. 2) A computer program is said to *learn*
+  from experience /E/ with respect to some class of tasks /T/ and
+  performance measure /P/, if its performance at tasks in /T/, as
+  measured by /P/, improves with experience /E/.
+
+
