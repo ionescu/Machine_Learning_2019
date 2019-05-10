@@ -9,7 +9,7 @@
   - every piece of homework is pass or fail
 
 - course takes place Saturdays 10:00-12:30 at Ewert House
-  - exceptions: *no class* on the 4th of May and 1st of June!
+  - exceptions: *no class* on the *4th of May* and *15th of June*!
 
 - main text: /Machine Learning/, Tom Mitchell, 1997
   - there are a couple of copies available in the ContEd library
@@ -29,9 +29,35 @@
   - to study human learning (and intelligence)
     - perhaps we could then improve our own abilities to learn and to teach
 
+- two main approaches:
+  - modelling how we think and learn, without caring about the underlying physiological mechanisms
+  - modelling the underlying physiological mechanism, without caring how they lead to thinking and learning
+
 - *Definition* (Mitchell, p. 2) A computer program is said to *learn*
   from experience /E/ with respect to some class of tasks /T/ and
   performance measure /P/, if its performance at tasks in /T/, as
   measured by /P/, improves with experience /E/.
+  - how can we understand this mathematically?
+    - for example, by representing the various elements using sets and functions
+    - the most difficult to represent in this way appears to be /the task/
+
+- A preliminary mathematical representation:
+  - the set of tasks: =Task = In -> Out=
+  - the set of experiences: ```Experience = List E```{.haskell}
+  - measure of performance: $Perf : Task \to List In \to \mathb{R}$
+    - important: what we measure is of the same nature as the experience
+  - machine learning system: $ml : E \to T$
+  - for all $es_1, es_2$ we have
+    $$Perf (ml es_1) inputs <= Perf (ml (es_1 ++ es_2)) inputs$$
+
+- Example: handwriting recognition
+  - $T = Handwritten \to Standard$
+  - $E = List (Handwritten, Standard)$
+  - $P : E \to \mathbb{R}$
+
+- Example: checkers learning
+  - the task: $T : Board \to Move$
+  - experience: 
+
 
 
