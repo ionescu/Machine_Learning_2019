@@ -60,35 +60,46 @@ Introduction
   - In machine learning, we frequently encounter function-like "black boxes", which, however, are not functions.  The typical example is the Python "function" ```Random.choice(seq)```{.Python}, which takes as input a sequence (e.g., a list) and returns a randomly selected element of this sequence.  Obviously, if the argument has more than one element, ```Random.choice(seq)```{.python} will not be well-defined.  We shall follow the generally accepted convention of using the function notation also for such black boxes.  When we want to emphasise that we are not dealing with a proper function, we shall use a squiggly ```⇝```{.haskell} arrow instead of the standard straight one ```→```{.haskell}
   
 - A preliminary mathematical representation:
-  - the set of tasks: ```Task = In → Out```{.haskell}
-  - the set of experiences: ```Experience = List E```{.haskell}
-  - measure of performance: ```perf : (Task, List Out) → ℝ```{.haskell}
-    - we expect some similarity between what we measure and the experience
-  - machine learning system: ```learn : Experience → Task```{.haskell}
-  - for all ```ex₁, ex₂, ins```{.haskell}, we have
-  
->    perf (learn ex₁) ins <= perf (learn (es₁ ++ es₂)) ins
+  - the set of tasks: ```Task```{.haskell}
+  - the set of experiences: ```Experience```{.haskell}
+  - measure of performance: ```perf : Task → ℝ```{.haskell}
+  - machine learning system: ```learn : (Task, Experience) → Task```{.haskell}
+    - learning means improving with experience (according to ```perf``{.haskell}):
+    
+> for all t ∈ Task, for all e ∈ Experience, perf(t) ≤ perf(learn(t, e))
 
-- Example: checkers learning
-  - the task is to play a game: ```Play = Board → Move```{.haskell}
-    - a function in ```Play```{.haskell} tells you how to move on the board (we assume that the board contains information about whose turn it is)
-  - experience: ```Experience = Play → List Game```{.haskell}
-    - ```play : (Play, Play) → Game```{.haskell}
+- *Example*: checkers learning
+  - the task is to play a game: ```Task = Board → Move```{.haskell}
+    - a function in ```Task```{.haskell} tells you how to move on the board (we assume that the board contains information about whose turn it is).  We can call such a function a *strategy*
+  - experience: ```experience : Task → List Game```{.haskell}
+    - we assume we have a function that takes two strategies, plays them against each other, and returns the resulting game:```play : (Play, Play) ⇝ Game```{.haskell}
+      - note the squiggly arrow in the type of ```play```.{haskell}!
     - the list of games is created by giving the ```play```{.haskell} function the same argument *twice*
-  - measure of performance: ```perf : (Play, List Play) → ℝ```{.haskell} 
-  
+> experience(t) = [play(t, t), play(t, t), ..., play(t, t)]
+  - measure of performance: ```perf : (Task, List Task) → ℝ```{.haskell} 
+  - we need a function ```score : Game → {0, 1}```
 > perf (learner, [adv₁, ..., advₙ]) =
->   percentage [score(play(learner, adv₁)), ..., score(play(learner, advₙ))]
+>   sum [score(play(learner, adv₁)), ..., score(play(learner, advₙ))] / n
 
-- Example: self-driving car
+
+- *Example*: self-driving car
   - the task is to give steering commands based on sensor input:
-    ```Drive = Sensor → Steer```{.haskell}
-  - the set of experiences: ```Experience = List (Sensor, Steer)```{.haskell}
-  - performance: ```perf : (Drive, Itinerary) → Time```{.haskell}
+    ```Task = Sensor → Command```{.haskell}
+  - the set of experiences: ```Experience = List (Sensor, Command)```{.haskell}
+  - performance: ```perf : (Task, Itinerary) → Time```{.haskell}
     - ```perf (learner, itinerary)``` measures how long the learner drives along the given itinerary before making a mistake
     
 - **Homework**
-  - Give a similar interpretation for the handwriting recognition problem (Mitchell, page 3).
+  - Give a similar interpretation for the handwriting recognition problem (Mitchell, page 3):
+    - Task *T*: recognizing and classifying handwritten words within images
+    - Performance measure *P*: percent of words correctly classified
+    - Training experience *E*: a database of handwritten words with given classifications
+  - This involves filling in
+    - ```Task = ```{.haskell}
+    - ```Experience = ```{.haskell}
+    - ```perf : ```{.haskell}
+      - something about how ```perf```{.haskell} is computed
+  
   
 Concept learning
 ----------------
@@ -148,6 +159,15 @@ Nr    Sky    Temp    Humidity   Wind     Water   Forecast   Enjoyable
     2. In general, we will still have many hypothesis consistent with the training data.  The second decision is how to pick one of them.
   - The assumptions under which we manage to learn the correct concept form **the inductive bias**.
 
+- Hypothesis space for the weather example:
+  - each hypothesis is described by a tuple of ```(Sky*, Temp*, Humidity*, Wind*, Water*, Forecast*)```{.haskell}, where ```S* = S ∪ {?, ∅}```{.haskell}
+  - notation: ```s ~ s* iff s = s* or s* = ?``` (```s``` matches ```s*```)
+  
+Let ```h``` be described by ```(s*, t*, u*, wi*, wa*, f*)```.  Then
+
+> h (s, t, u, wi, wa, f) = s ~ s* and t ~ t* and u ~ u* and 
+>                          wi ~ wi* and wa ~ wa* and f ~ f*
+
 === ```Find-S```
 
 - ```Find-S``` solves problem 2 by choosing the *most specific* hypothesis that is consistent with the training data.  Obviously, that implies that there exists an ordering from specific to general.
@@ -174,13 +194,45 @@ for i in 1:n
   - ```X = {a, b, c, d}, H = {∅, {a, b}, {a, c}}, D₁ = {a}```{.haskell}
 - The choice of ```H```{.haskell} can avoid these problems.
 
-- Hypothesis space for the weather example:
-  - each hypothesis is described by a tuple of ```(Sky*, Temp*, Humidity*, Wind*, Water*, Forecast*)```{.haskell}, where ```S* = S ∪ {?, ∅}```{.haskell}
-  - notation: ```s ~ s* iff s = s* or s* = ?``` (```s``` matches ```s*```)
-  
-Let ```h``` be described by ```(s*, t*, u*, wi*, wa*, f*)```.  Then
+**Fundamental property of ```Find-S```**
 
-> h (s, t, u, wi, wa, f) = s ~ s* and t ~ t* and u ~ u* and wi ~ wi* and wa ~ wa* and f ~ f*
+If ```Find-S``` works, then
+
+> s = Find-S (D₀, D₁, H)  implies
+>     D₀ ⊆ ¬s, D₁ ⊆ s, and
+>     for all h ∈ H, D₀ ⊆ ¬h and D₁ ⊆ h ⇒ s ⊆ h
+
+**Exercise**
+
+What does ```Find-S (D₁, D₀, H)``` do?
+
+- Improving ```Find-S```: in order to solve the two problems, we can modify the algorithm to find *all* maximally specific hypotheses consisten with the data.
+
+
+```{.haskell}
+
+-- input: training data {((x₁, c(x₁)) ..., (xₙ, c(xₙ))}
+--        hypothesis set H
+S = allMin H -- start with all smallest element of H
+repeat until S no longer changes:
+  for i in 1:n
+    if c(xᵢ) = 0
+    then eliminate from S all {s | xᵢ ∈ s}
+    else for all s ∈ S
+        if xᵢ ∈ s 
+        then keep s
+        else replace s with allMin {h' ∈ H | h ⊆ h' and xᵢ ∈ h'}
+-- output: all most specific hyp consistent with D
+```
+
+- **Remarks**
+  - why do we need to repeat the ```for``` loop?
+  - the algorithm terminates (why?)
+
+- Avoiding ```repeat```
+  - we need to keep a record of the negative examples
+  - idea: do that in the same form as the record we keep for positive examples!
+  - this leads to the ```Candidate-Elimination```{.haskell} algorithm
 
 
 

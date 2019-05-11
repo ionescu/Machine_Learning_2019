@@ -92,38 +92,49 @@ Black boxes versus functions
 Mathematical representation
 ===========================
 
-- ```Task = In → Out```{.haskell}
-- ```Experience = List E```{.haskell}
-- ```perf : (Task, List Out) → ℝ```{.haskell}
-- ```learn : Experience → Task```{.haskell}
-- for all ```ex₁, ex₂, ins```{.haskell}, we have
-  
->    perf (learn ex₁) ins <= perf (learn (es₁ ++ es₂)) ins
+- the set of tasks: ```Task```{.haskell}
+- the set of experiences: ```Experience```{.haskell}
+- measure of performance: ```perf : Task → ℝ```{.haskell}
+- machine learning system: ```learn : (Task, Experience) → Task```{.haskell}
+  - learning means improving with experience (according to ```perf``{.haskell}):
+    
+> for all t ∈ Task, for all e ∈ Experience:
+>     perf(t) ≤ perf(learn(t, e))
 
 Example: checkers learning
 ==========================
-- Task: ```Play = Board → Move```{.haskell}
-- Experience: ```Experience = Play → List Game```{.haskell}
-    - ```play : (Play, Play) → Game```{.haskell}
-    - the list of games is created by giving the ```play```{.haskell} function the same argument *twice*
-- Measure of performance: ```perf : (Play, List Play) → ℝ```{.haskell} 
-  
+
+- ```Task = Board → Move```{.haskell}
+- ```experience : Task → List Game```{.haskell}
+  - we assume ```play : (Play, Play) ⇝ Game```{.haskell}
+    - note the squiggly arrow in the type of ```play```{.haskell}!
+    
+> experience(t) = [play(t, t), play(t, t), ..., play(t, t)]
+
+- ```perf : (Task, List Task) → ℝ```{.haskell} 
+- we need a function ```score : Game → {0, 1}```{.haskell}
+
 > perf (learner, [adv₁, ..., advₙ]) =
->   prc [score(play(learner, adv₁)), ..., score(play(learner, advₙ))]
+>   (sum [score(play(learner, adv₁)), ..., 
+>        score(play(learner, advₙ))]) * 100 / n
 
 Example: self-driving car
 =========================
 
-- Task: ```Drive = Sensor → Steer```{.haskell}
-- Experiences: ```Experience = List (Sensor, Steer)```{.haskell}
-- Measure of performance: ```perf : (Drive, Itinerary) → Time```{.haskell}
-    - ```perf (learner, itinerary)``` how long the learner drives along the given itinerary before making a mistake
+- the task is to give steering commands based on sensor input:
+  ```Task = Sensor → Command```{.haskell}
+- the set of experiences: ```Experience = List (Sensor, Command)```{.haskell}
+- performance: ```perf : (Task, Itinerary) → Time```{.haskell}
+  - ```perf (learner, itinerary)``` measures how long the learner drives along the given itinerary before making a mistake
 
 Homework
 ========
 
-- Give a similar interpretation for the handwriting recognition problem (Mitchell, page 3).
-. . .
+- Give a similar interpretation for the handwriting recognition problem (Mitchell, page 3):
+    - Task *T*: recognizing and classifying handwritten words within images
+    - Performance measure *P*: percent of words correctly classified
+    - Training experience *E*: a database of handwritten words with given classifications
+- You have to fill in    
   - ```Task = ```{.haskell}
   - ```Experience = ```{.haskell}
   - ```perf : ```{.haskell}
@@ -258,7 +269,10 @@ Remarks
 - A bad situation for ```Find-S```:
   - ```X = {a, b, c, d}, H = {∅, {a, b}, {a, c}}, D₁ = {a}```{.haskell}
 - Another bad situation:
-  - ```X = {a, b, c, d}, H = {∅, {a, b, c}, {a, b, d}}, D₁ = {a}, D₀ = {c}```{.haskell}
+
+> X = {a, b, c, d}, H = {∅, {a, b, c}, {a, b, d}}, 
+> D₁ = {a}, D₀ = {c}
+  
 - The choice of ```H```{.haskell} can avoid these problems, as in the weather example.
 
 Property of ```Find-S```
