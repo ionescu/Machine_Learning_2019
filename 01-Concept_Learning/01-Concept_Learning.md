@@ -21,7 +21,7 @@ Administrative matters
   - every piece of homework is pass or fail
 
 - course takes place Saturdays 10:00-12:30 at Ewert House
-  - exceptions: **no class** on the **4th of May** and **15th of June**!
+  - exceptions: **no class** on the **4th of May** and **1st of June (TBC)**!
 
 - main text: /Machine Learning/, Tom Mitchell, 1997
   - there are a couple of copies available in the ContEd library

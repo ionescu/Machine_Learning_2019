@@ -109,7 +109,7 @@ Example: checkers learning
 - Measure of performance: ```perf : (Play, List Play) → ℝ```{.haskell} 
   
 > perf (learner, [adv₁, ..., advₙ]) =
->   percentage [score(play(learner, adv₁)), ..., score(play(learner, advₙ))]
+>   prc [score(play(learner, adv₁)), ..., score(play(learner, advₙ))]
 
 Example: self-driving car
 =========================
@@ -123,7 +123,12 @@ Homework
 ========
 
 - Give a similar interpretation for the handwriting recognition problem (Mitchell, page 3).
-  
+. . .
+  - ```Task = ```{.haskell}
+  - ```Experience = ```{.haskell}
+  - ```perf : ```{.haskell}
+    - something about how ```perf```{.haskell} is computed
+
 Concept learning
 ================
 
@@ -206,6 +211,17 @@ Inductive bias
 
 - The assumptions under which we manage to learn the correct concept form **the inductive bias**.
 
+Hypothesis space for the weather example
+========================================
+
+- each hypothesis is described by a tuple of ```(Sky*, Temp*, Humidity*, Wind*, Water*, Forecast*)```{.haskell}, where ```S* = S ∪ {?, ∅}```{.haskell}
+- notation: ```s ~ s* iff s = s* or s* = ?``` (```s``` matches ```s*```)
+  
+Let ```h``` be described by ```(s*, t*, u*, wi*, wa*, f*)```.  Then
+
+> h (s, t, u, wi, wa, f) = s ~ s* and t ~ t* and u ~ u* and 
+>                          wi ~ wi* and wa ~ wa* and f ~ f*
+
 ```Find-S```
 ============
 
@@ -220,14 +236,20 @@ Inductive bias
 
 -- input: training data {((x₁, c(x₁)) ..., (xₙ, c(xₙ))}
 --        hypothesis set H
-h = min H -- set the current hypothesis h to "the" (or "a") smallest element of H
+h = min H -- "the" (or "a") smallest element of H
 for i in 1:n
   if c(xᵢ) = 0 
     then keep h
     else if xᵢ ∈ h then keep h
                    else h = min {h' ∈ H | h ⊆ h' and xᵢ ∈ h'}
--- output: "the" (or "a" most) specific hypothesis in H consistent with the training data
+-- output: "the" (or "a") most specific hypothesis 
+--         consistent with D
 ```
+
+Example
+=======
+
+Work out how ```Find-S```{.haskell} works on the weather example.
 
 Remarks
 =======
@@ -235,18 +257,53 @@ Remarks
 - If ```H```{.haskell} contains all possible concepts, then the result of ```Find-S``` is ```D₁```.
 - A bad situation for ```Find-S```:
   - ```X = {a, b, c, d}, H = {∅, {a, b}, {a, c}}, D₁ = {a}```{.haskell}
-- The choice of ```H```{.haskell} can avoid these problems.
+- Another bad situation:
+  - ```X = {a, b, c, d}, H = {∅, {a, b, c}, {a, b, d}}, D₁ = {a}, D₀ = {c}```{.haskell}
+- The choice of ```H```{.haskell} can avoid these problems, as in the weather example.
 
-```Find-S``` and the weather example
-====================================
+Property of ```Find-S```
+========================
 
-- Hypothesis space for the weather example:
-  - each hypothesis is described by a tuple of ```(Sky*, Temp*, Humidity*, Wind*, Water*, Forecast*)```{.haskell}, where ```S* = S ∪ {?, ∅}```{.haskell}
-  - notation: ```s ~ s* iff s = s* or s* = ?``` (```s``` matches ```s*```)
-  
-Let ```h``` be described by ```(s*, t*, u*, wi*, wa*, f*)```.  Then
+If ```Find-S``` works, then
 
-> h (s, t, u, wi, wa, f) = s ~ s* and t ~ t* and u ~ u* and wi ~ wi* and wa ~ wa* and f ~ f*
+> s = Find-S (D₀, D₁, H)  implies
+>     D₀ ⊆ ¬s, D₁ ⊆ s, and
+>     for all h ∈ H, D₀ ⊆ ¬h and D₁ ⊆ h ⇒ s ⊆ h
 
+Exercise
+========
 
+What does ```Find-S (D₁, D₀, H)``` do?
+
+A better ```Find-S```
+================================
+
+```{.haskell}
+
+-- input: training data {((x₁, c(x₁)) ..., (xₙ, c(xₙ))}
+--        hypothesis set H
+S = allMin H -- start with all smallest element of H
+repeat until S no longer changes:
+  for i in 1:n
+    if c(xᵢ) = 0
+    then eliminate from S all {s | xᵢ ∈ s}
+    else for all s ∈ S
+        if xᵢ ∈ s 
+        then keep s
+        else replace s with allMin {h' ∈ H | h ⊆ h' and xᵢ ∈ h'}
+-- output: all most specific hyp consistent with D
+```
+
+Remarks
+=======
+
+- why do we need to repeat the ```for``` loop?
+- the algorithm terminates (why?)
+
+Avoiding ```repeat```
+=====================
+
+- we need to keep a record of the negative examples
+- idea: do that in the same form as the record we keep for positive examples!
+- this leads to the ```Candidate-Elimination```{.haskell} algorithm
 
