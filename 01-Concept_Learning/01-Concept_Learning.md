@@ -73,11 +73,14 @@ Introduction
     - a function in ```Task```{.haskell} tells you how to move on the board (we assume that the board contains information about whose turn it is).  We can call such a function a *strategy*
   - experience: ```experience : Task → List Game```{.haskell}
     - we assume we have a function that takes two strategies, plays them against each other, and returns the resulting game:```play : (Play, Play) ⇝ Game```{.haskell}
-      - note the squiggly arrow in the type of ```play```.{haskell}!
+      - note the squiggly arrow in the type of ```play```{.haskell}!
     - the list of games is created by giving the ```play```{.haskell} function the same argument *twice*
+    
 > experience(t) = [play(t, t), play(t, t), ..., play(t, t)]
+
   - measure of performance: ```perf : (Task, List Task) → ℝ```{.haskell} 
-  - we need a function ```score : Game → {0, 1}```
+  - we need a function ```score : Game → {0, 1}```{.haskell}
+  
 > perf (learner, [adv₁, ..., advₙ]) =
 >   sum [score(play(learner, adv₁)), ..., score(play(learner, advₙ))] / n
 
