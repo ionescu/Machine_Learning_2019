@@ -131,6 +131,23 @@ In other words, the aim of Bayesian learning is to determine the **maximum a pos
 
 2. The notation ```p(h | d)```{.haskell} is an abbreviation for ```p({h} | {d})```{.haskell} (remember that events are *sets*).
 
+3. The expression ```p(_ | d)```{.haskell} denotes a function of argument ```h```{.haskell}:
+
+> p(_ | d) : H → [0, 1]
+> p(_ | d)(h) = p(h | d)
+
+4. Alternative notations for ```p(_ | d)```{.haskell} are ```h ↦ p(h | d)```{.haskell}, so we could have written
+
+> hₘₐₚ = argmax (h ↦ p(h | d))
+
+ > or
+
+> hₘₐₚ = argmax (h ∈ H ↦ p(h | d))
+
+ > to make the domain of the function explicit.  In the context of ```argmax```{.haskell}, the most frequent notation is
+
+> hₘₐₚ = argmaxₕ p(h | d)
+
 **Exercise**: 
 
 - What specification does the partial function ```max```{.haskell} satisfy?
@@ -180,12 +197,74 @@ We can now try to answer the question by applying Bayes' theorem:
 
 Therefore, the MAP hypothesis is ```healthy```{.haskell}.
 
+In general, we have
+
+> hₘₐₚ = argmaxₕ p(h | d)
+>      = argmaxₕ (p(d | h) * p(h) / p(d))
+>      = argmaxₕ (p(d | h) * p(h)) -- since p(d) is constant w.r.t. h
+
+If, additionally, we assume that all hypotheses are equally likely, i.e., ```p(h)```{.haskell} is also constant w.r.t. ```h```{.haskell} (```p(h) = 1/card(H)```{.haskell} when ```H```{.haskell} is finite), then we can go one step further and obtain
+
+> hₘₐₚ = argmaxₕ p(h | d)
+>      = argmaxₕ p(d | h)
+
+```p(d | h)```{.haskell}, the probability of encountering the data ```d```{.haskell} if we assume that hypothesis ```h```{.haskell} is correct, is called the **likelihood** of ```d```{.haskell} given ```h```{.haskell}.  A hypothesis that maximises the likelihood is known, reasonably enough, as a *maximum likelihood hypothesis (ML)*.  Therefore
+
+> hₘₗ = argmaxₕ p(d | h)
+
+**Please note** that, in general, ```hₘₐₚ ≠ hₘₗ```{.haskell}!  The equality only holds when we assume that all hypotheses are equally likely!  In particular, in the example above, this is not the case.
+
+**Exercise**: what is ```hₘₗ```{.haskell} in the example above?
+
 === Homework
 
 Apply Bayes' theorem to answer the following question (Elmer Mode 1966, page 53):
 
  > A class in advanced mathematics contains 10 juniors, 30 seniors, and 10 graduate students.  Three of the juniors, 10 of the seniors, and 5 of the graduate students received an A in the course.  If a student is chosen at random from this class and is found to have earned an A, what is the probability that he is a graduate student?
  
+Bayesian concept learning
+-------------------------
+
+Recall that a concept is a subset of, or a boolean function defined on, a given set:
+
+> c : X → {0, 1}
+
+Each hypothesis ```h ∈ H```{.haskell} is such a subset or function (```h : X → {0, 1}```{.haskell}), and we assume that ```c ∈ H```{.haskell}.
+
+The data we are given in the concept learning task consists of pairs
+
+> d = {(x₁, c(x₁)), ..., (xₘ, c(xₘ))}
+
+The "brute-force" Bayesian concept learning algorithms then returns a (or "the") MAP hypothesis:
+
+> given H, p(h)
+> for every h ∈ H:
+>   compute p(h | d) = p(d | h) * p(h) / p(d)
+>   return hₘₐₚ = argmaxₕ p(h | d)
+
+The problem is computing ```p(d | h)```{.haskell} and ```p(d)```{.haskell}.  As we have seen above, the latter is not necessary, but it is very instructive.
+
+To compute the likelihood, we make the following assumption: the data is completely correct, and hypotheses are not "noisy" functions.  Therefore, for any ```h ∈ H```{.haskell}, if we assume that ```h = c```{.haskell}, then the data ```d```{.haskell} can only arise if ```h```{.haskell} is consistent with it.  Therefore:
+
+> p(d | h) = if for all (xᵢ, bᵢ) ∈ d  h(xᵢ) = bᵢ
+>               then 1
+>               else 0
+
+Now that we have computed ```p(d | h)```{.haskell} for every ```h ∈ H```{.haskell}, we can compute the a-priori probability that the data ```d```{.haskell} is realised by applying the law of total probability:
+
+> p(d) = Σₕ p(d | h) * p(h)
+
+This computation shows that the a-priori estimate of the probability of data must be consistent with the a-priori estimate of the probability of hypotheses.  Normally, we consider data to be more *objective* than the hypotheses, which are more *subjective*, so this can cause some confusion.
+
+=== Bayesian concept learning and ```Find-S```
+
+If we assume that all hypotheses are equally likely, then the brute-force Bayesian concept learning algorithm will return an ML hypothesis:
+
+> hₘₐₚ = hₘₗ = argmaxₕ p(d | h)
+
+Since ```p(d | h) = 1```{.haskell} if ```h```{.haskell} is consistent with the data, and ```p(d | h) = 0```{.haskell} otherwise, the algorithm will return any one of the hypotheses in ```H```{.haskell} consistent with ```d```{.haskell}.
+
+
 
 
 
