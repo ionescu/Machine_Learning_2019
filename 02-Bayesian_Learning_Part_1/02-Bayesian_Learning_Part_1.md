@@ -20,7 +20,7 @@ Probability theory
 
 - The currently accepted mathematical model was developed by Kolmogorov in 1933 and covers both interpretations.
   - Ingredients:
-      - Ω, the set of all possible outcomes
+      - ```Ω```{.haskell}, the set of all possible outcomes
       - ```Event```{.haskell}, the set of all events ```Event ⊆ ℙ(Ω)```{.haskell}[^2], which are what we actually want to assign probabilities to.  The set of events is assumed to satisfy certain elementary properties (forming a σ-algebra of ```Ω```{.haskell}).
       - ```p : Event → [0, 1]```{.haskell}, the probability measure, satisfying
         1. ```p(∅) = 0, p(Ω) = 1```{.haskell}
@@ -268,7 +268,7 @@ Since ```Find-S```{.haskell} returns a consistent hypothesis, it therefore follo
 
 Even if ```p```{.haskell} is not constant w.r.t. hypotheses, ```Find-S```{.haskell} can still return a MAP hypothesis, if 
 
-> hᵢ ⊆ hⱼ ⇒ p(hᵢ) > p(hⱼ)
+> hᵢ ⊆ hⱼ ⇒ p(hᵢ) ≥ p(hⱼ)
 
 (i.e., ```p```{.haskell} favours the more specific hypothesis), and if there is a unique most specific hypothesis consistent with ```d```{.haskell} in ```H```{.haskell}.
 
