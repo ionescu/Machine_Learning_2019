@@ -264,6 +264,14 @@ If we assume that all hypotheses are equally likely, then the brute-force Bayesi
 
 Since ```p(d | h) = 1```{.haskell} if ```h```{.haskell} is consistent with the data, and ```p(d | h) = 0```{.haskell} otherwise, the algorithm will return any one of the hypotheses in ```H```{.haskell} consistent with ```d```{.haskell}.
 
+Since ```Find-S```{.haskell} returns a consistent hypothesis, it therefore follows that it returns a MAP (and an ML) hypothesis too!
+
+Even if ```p```{.haskell} is not constant w.r.t. hypotheses, ```Find-S```{.haskell} can still return a MAP hypothesis, if 
+
+> hᵢ ⊆ hⱼ ⇒ p(hᵢ) > p(hⱼ)
+
+(i.e., ```p```{.haskell} favours the more specific hypothesis), and if there is a unique most specific hypothesis consistent with ```d```{.haskell} in ```H```{.haskell}.
+
 
 
 
