@@ -12,6 +12,17 @@ header-includes: \usepackage{tikz}
 \titlegraphic{\includegraphics[scale=0.4]{oudce.jpg}}
 \maketitle
 
+Administrative
+==============
+
+**No lecture on the 1st of June!**
+
+Homework from 2019-05-11 due **now**!
+
+Questions?
+==========
+
+
 Probability theory
 ==================
 :::::: {.columns}

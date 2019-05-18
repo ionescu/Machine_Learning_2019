@@ -1,0 +1,12 @@
+---
+theme: boxes
+theme: Madrid
+mainfont: TeX Gyre Pagella
+monofont: DejaVuSansMono
+---
+
+\title{Lecture 2}
+\author{Cezar Ionescu}
+\date{18/05/2019}
+\titlegraphic{\includegraphics[scale=0.4]{oudce.jpg}}
+\maketitle
