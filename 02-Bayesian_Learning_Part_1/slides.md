@@ -150,7 +150,7 @@ Exercises
 :::::: {.columns}
 ::: {.column width=60%}
 
-1. Derive the formula for ```p(A ∩ B)```{.haskell}.
+1. Derive the formula for ```p(¬A)```{.haskell}.
 2. Derive the formula for ```p(A ∪ B)```{.haskell}
 3. Assume that ```B₁, ..., Bₙ```{.haskell} are pairwise disjoint.  Show that
 
