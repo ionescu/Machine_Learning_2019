@@ -169,7 +169,7 @@ This relatively trivial result is sometimes called "Bayes' theorem".
 **Example**: (Mitchell, pages 157-158)
 
 - ```H =  {healthy, ill}```{.haskell}
-- There is a test with possible results ```⊖, ⊕```{.haskell} ("negative", i.e., the disease is not present, and "positive", i.e., the disease is present).
+- There is a test with possible results ```R = {⊖, ⊕}```{.haskell} ("negative", i.e., the disease is not present, and "positive", i.e., the disease is present).
 - We are told that only ```0.008```{.haskell} of the population have the disease.
 - We are also told that the test is not perfectly reliable.  If the patient has the disease, the test will be positive only in ```98%```{.haskell} of the cases.  If the patient does not have the disease, then the test will still be positive in ```3%```{.haskell} of the cases.
 - Finally, we are given the data: a patient's test has come back positive.  The question is: what is the MAP hypothesis?  Is it likelier that the patient is ill, or healthy?

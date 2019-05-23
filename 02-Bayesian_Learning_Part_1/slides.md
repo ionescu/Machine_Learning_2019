@@ -238,7 +238,7 @@ Mitchell, pages 157-158:
 
 - ```H =  {healthy, ill}```{.haskell}
 
-- test results: ```⊖, ⊕```{.haskell}
+- test results: ```R = {⊖, ⊕}```{.haskell}
 
 - ```0.008```{.haskell} of the population have the disease.
 
