@@ -128,6 +128,22 @@ Compute ```p(¬J, ¬M, A, B, E)```{.haskell}.  This is the probability that ther
 Minimum description length (MDL) principle
 ------------------------------------------
 
+The ASCII code used to represent alphabetic characters of the English language (and largely replaced by Unicode nowadays) used one byte (eight bits) per character.  Thus, to encode a string of 100 characters, 800 bits were needed.  Quite often, this encoding was very wasteful, and substantial memory savings could be achieved by *compressing* the string (for example by using *zip* or *rar*).  Compression uses a different, string-specific encoding, with the property that more frequent characters receive shorter codes.  For example, to encode ```nine```{.haskell} we could use
+
+> 'n' → 0
+> 'i' → 10
+> 'e' → 11
+
+so that 
+
+> 'nine' → 010011
+
+It turns out that an optimal encoding scheme requires, for every character ```c```{.haskell}, about ```-log₂ f(c)```{.haskell} bits, where ```f(c)```{.haskell} is the frequency with which the character ```c```{.haskell} appears in the string.
+
+More generally, in order to encode messages drawn at random from a finite set, the optimal encoding scheme will associate to message ```mᵢ```{.haskell}, having probability ```pᵢ```{.haskell}, about ```-log₂ pᵢ```{.haskell} bits.
+
+We these preliminaries, we return to the definition of the MAP hypothesis.  We have
+
 > hₘₐₚ = argmaxₕ p(d | h) * p(h)
 > iff
 > hₘₐₚ = argmaxₕ log₂ (p(d | h) * p(h))
@@ -135,8 +151,14 @@ Minimum description length (MDL) principle
 > hₘₐₚ = argmaxₕ log₂ p(d | h) + log₂ p(h)
 > iff 
 > hₘₐₚ = argminₕ -log₂ p(d | h) - log₂ p(h)
-> iff
-> hₘₐₚ = argminₕ length(encode(d | h)) + length(encode(h))
+
+Here, the expression ```-log₂ p(h)```{.haskell} represents the length that we associate to hypothesis ```h```{.haskell} under the optimal encoding.  Thus, ```-log₂ p(h) = length(optimal_encode(h))```{.haskell}.  
+
+Similarly, the expression ```-log₂ p(d | h)```{.haskell} represents the length associated to the data ```d```{.haskell} under the assumption that hypothesis ```h```{.haskell} is the correct one.  We write this as ```length(optimal_encode(d | h))```{.haskell}.  Therefore
+
+> hₘₐₚ = argminₕ length(optimal_encode(d | h)) + length(optimal_encode(h))
+
+In other words, the MAP hypothesis is the one that minimises the sum of two description lengths: that of the hypothesis itself, and that of the given data, assuming that hypothesis to be the correct one.  This can be seen as a mathematical interpretation of Occam's razor.
 
 
 
