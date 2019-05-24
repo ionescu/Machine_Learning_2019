@@ -50,11 +50,80 @@ It is easy to see that, therefore:
 
 === Independence, conditional independence
 
+**Definition**: Two events ```X, Y ⊆ Ω```{.haskell} are called **independent** if 
+
+> p(X ∩ Y) = p(X) * p(Y)
+
+**Example**:  Consider a fair standard die, and the events ```even = {2, 4, 6}```{.haskell}, ```big = {5, 6}```{.haskell}.  Then ```even```{.haskell} and ```big```{.haskell} are independent.
+
+**Exercise**: If ```X, Y```{.haskell} are independent, then so are ```X, ¬Y```{.haskell}.
+
+**Example**: The events ```big```{.haskell} and ```divBy3 = {3, 6}```{.haskell} are **not** independent.
+
+**Definition**: Consider events ```X, Y, Z ⊆ Ω```{.haskell} such that ```p(Z) ≠ 0```{.haskell}.  Events ```X, Y```{.haskell} are called **conditionally independent given** ```Z```{.haskell} if
+
+> p(X ∩ Y | Z) = P(X | Z) * p(Y | Z)
+
+**Example**: 
+
+- The events ```even, big```{.haskell} are conditionally dependent given ```divBy3```{.haskell}.  Intuition: knowing the result is ```divBy3```{.haskell} means that knowledge of it being ```big```{.haskell} informs knowledge of it being ```even```{.haskell}.
+
+- The events ```divBy3, big```{.haskell} are conditionally independent given ```{2, 3, 5, 6}```{.haskell}.  Intuition: knowing that the result is in ```{2, 3, 5, 6}```{.haskell} means that knowledge of it being ```big```{.haskell} doesn't tell me anything more about it being ```divBy3```{.haskell}
+
 === Bayesian networks
 
-Bayesian networks are more efficient representations of joint probability distributions.
+A Bayesian network is a graphical device for recording conditional independence information for a finite ```Ω = (Ω₁, Ω₂, ..., Ωₙ)```{.haskell}, in order to make the computation of entries of the joint probability distribution more efficient.  The network is a *directed acyclic graph (DAG)*, with one node for each component ```Ωᵢ```{.haskell}.  For example:
 
-**Homework**: compute the following joint probability (Nilsson, 19.4, page 340).
+![Mitchell, page 186](forestfire.png)
+
+The network is assumed to be constructed in such a way that the probability of an ```ω_i```{.haskell} is conditionally independent of any non-descendants given its parents.
+
+**Example*: In the network above, we have
+
+> p(thunder | lightning ∩ bustourgroup) = p(thunder | lightning)
+
+but in general
+
+> p(lightning | thunder ∩ storm) ≠ p(lightning | storm)
+
+In this way, the Bayesian network allows us to compute any entry in the joint distribution table.  For example:
+
+>   p(thunder, forestfire, campfire, lightning, storm, bustourgroup)
+> =
+>   p(thunder | forestfire ∩ campfire ∩ lightning ∩ storm ∩ bustourgroup) * 
+>   p(forestfire ∩ campfire ∩ lightning ∩ storm ∩ bustourgroup)
+> =
+>   p(thunder | lightning) * 
+>   p(forestfire ∩ campfire ∩ lightning ∩ storm ∩ bustourgroup)
+> =
+>   p(thunder | lightning) * 
+>   p(forestfire | campfire ∩ lightning ∩ storm ∩ bustourgroup) *
+>   p(campfire ∩ lightning ∩ storm ∩ bustourgroup)
+> =
+>   p(thunder | lightning) * 
+>   p(forestfire | campfire ∩ lightning) *
+>   p(campfire ∩ lightning ∩ storm ∩ bustourgroup)
+> =
+>   p(thunder | lightning) * 
+>   p(forestfire | campfire ∩ lightning) *
+>   p(campfire | lightning ∩ storm ∩ bustourgroup) *
+>   p(lightning ∩ storm ∩ bustourgroup)
+> =
+>   p(thunder | lightning) * 
+>   p(forestfire | campfire ∩ lightning) *
+>   p(campfire | storm ∩ bustourgroup) *
+>   p(lightning | storm) *
+>   p(storm) * p(bustourgroup)
+
+Assuming all the ```Ωᵢ```{.haskell} are boolean, we need two tables 1x2 tables to store the probability values for ```Storm, BusTourGroup```{.haskell}, two 2x2 tables to store the conditional table for ```Lightning | Storm```{.haskell} and ```Thunder | Lightning```{.haskell}, and two 4x2 tables to store the conditional table for ```ForestFire | Campfire ∩ Lightning```{.haskell} and ```Campfire | Storm ∩ BusTourGroup```{.haskell}, altogether 28 values.  If we stored the full joint distribution table, we would need ```2⁶ = 64```{.haskell} values.
+
+**Homework**: (based on Nilsson, 19.4, page 340) Consider the following Bayesian network:
+
+![Nielsson, page 341](burglary.png)
+
+Compute ```p(¬J, ¬M, A, B, E)```{.haskell}.  This is the probability that there is both an earthquake and a burglary, the alarm rings, but neither John nor Mary call.
+
+**Exercise**: Compute ```p(¬J, ¬M, B, E)```{.haskell} (this is exercise 19.4 in Nielsson).
 
 Minimum description length (MDL) principle
 ------------------------------------------
