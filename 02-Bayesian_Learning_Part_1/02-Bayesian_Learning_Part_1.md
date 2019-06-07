@@ -86,8 +86,12 @@ Since events and predicates are modelled as sets, we can perform on them set-the
 
 1. Derive the formula for ```p(¬A)```{.haskell}.
 2. Derive the formula for ```p(A ∪ B)```{.haskell}
-3. Assume that ```B₁, ..., Bₙ```{.haskell} are pairwise disjoint.  Show that
+3. Assume that ```B₁, ..., Bₙ```{.haskell} are pairwise disjoint, and let ```B = ⋃ Bᵢ```{.haskell}.  Show that
 
+> p(A ∩ B) = p(A ∩ B₁) + ... + p(A ∩ Bₙ)
+
+  > In particular, if ```A ⊆ B```{.haskell}, then
+  
 > p(A) = p(A ∩ B₁) + ... + p(A ∩ Bₙ)
 
 \begin{tikzpicture}
