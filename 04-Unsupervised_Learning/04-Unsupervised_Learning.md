@@ -1,5 +1,5 @@
 ---
-title: Lecture 3
+title: Lecture 4
 monofont: DejaVuSansMono
 author: Cezar Ionescu
 geometry: "left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm"
@@ -234,7 +234,8 @@ The EM algorithm deals with this situation by considering the missing informatio
 
 **Remark**: This encoding of the choice of distribution is called "one-hot encoding".  It has the advantage that the likelihood can be expressed as
 
->    p(xᵢ, zᵢ₁, zᵢ₂ | h) = (1/√(2 * π * σ₁²)) * exp(- zᵢ₁ * (x - μ₁)²/(2 * σ₁²)) + (1/√(2 * π * σ₂²)) * exp(- zᵢ₂ * (x - μ₂)²/(2 * σ₂²))
+>    p(xᵢ, zᵢ₁, zᵢ₂ | h) = (1/√(2 * π * σ₁²)) * exp(- zᵢ₁ * (x - μ₁)²/(2 * σ₁²)) + 
+>                          (1/√(2 * π * σ₂²)) * exp(- zᵢ₂ * (x - μ₂)²/(2 * σ₂²))
 
 Since the data itself now has an unknown part, it becomes a random variable.  We can no longer reasonably want to maximise ```ln p(d | h)```{.haskell}, however, we can ask for maximising
 
@@ -252,13 +253,17 @@ But
 
 >    E (ln p(xᵢ, zᵢ₁, zᵢ₂ | h)
 > =
->    E (ln ((1/√(2 * π * σ₁²)) * exp(- zᵢ₁ * (xᵢ - μ₁)²/(2 * σ₁²)) + (1/√(2 * π * σ₂²)) * exp(- zᵢ₂ * (xᵢ - μ₂)²/(2 * σ₂²))))
+>    E (ln ((1/√(2 * π * σ₁²)) * exp(- zᵢ₁ * (xᵢ - μ₁)²/(2 * σ₁²)) + 
+>           (1/√(2 * π * σ₂²)) * exp(- zᵢ₂ * (xᵢ - μ₂)²/(2 * σ₂²))))
 > =
->    E (ln 1/√(2 * π * σ₁²) - zᵢ₁ * (xᵢ - μ₁)²/(2 * σ₁²)) + ln 1/√(2 * π * σ₂²) - zᵢ₂ * (xᵢ - μ₂)²/(2 * σ₂²))
+>    E (ln 1/√(2 * π * σ₁²) - zᵢ₁ * (xᵢ - μ₁)²/(2 * σ₁²)) + 
+>       ln 1/√(2 * π * σ₂²) - zᵢ₂ * (xᵢ - μ₂)²/(2 * σ₂²))
 > =
->    (ln 1/√(2 * π * σ₁²) + ln 1/√(2 * π * σ₂²) - E(zᵢ₁ * (xᵢ - μ₁)²/(2 * σ₁²)) + ln 1/√(2 * π * σ₂²) - E(zᵢ₂ * (xᵢ - μ₂)²/(2 * σ₂²))
+>    (ln 1/√(2 * π * σ₁²) + ln 1/√(2 * π * σ₂²) - E(zᵢ₁ * (xᵢ - μ₁)²/(2 * σ₁²)) + 
+>     ln 1/√(2 * π * σ₂²) - E(zᵢ₂ * (xᵢ - μ₂)²/(2 * σ₂²))
 > =
->    (ln 1/√(2 * π * σ₁²) + ln 1/√(2 * π * σ₂²) - E(zᵢ₁) * (xᵢ - μ₁)²/(2 * σ₁²) + ln 1/√(2 * π * σ₂²) - E(zᵢ₂) * (xᵢ - μ₂)²/(2 * σ₂²)
+>    (ln 1/√(2 * π * σ₁²) + ln 1/√(2 * π * σ₂²) - E(zᵢ₁) * (xᵢ - μ₁)²/(2 * σ₁²) + 
+>     ln 1/√(2 * π * σ₂²) - E(zᵢ₂) * (xᵢ - μ₂)²/(2 * σ₂²)
 
 We have reduced the computation of ```E (ln p(d | h))```{.haskell} to that of ```E(zᵢ₁)```{.haskell} and ```E(zᵢ₂)```{.haskell}.  But these are easy: they are just the probability that ```xᵢ```{.haskell} comes from the red (respectively blue) distribution, given the hypothesis ```h```{.haskell}:
 
