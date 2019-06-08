@@ -131,8 +131,6 @@ The mean price of houses in a certain neighbourhood is ```400000```{.haskell} $,
 
 *Solution*: From Chebyshev's theorem, we know that at least ```75%```{.haskell} of the houses are within the interval ```[μ - 2 * σ, μ + 2 * σ]```{.haskell}.  Therefore, the interval is ```[240000, 560000]```{.haskell}.
 
-**Exercise**:
-
 === The normal distribution
 
 > pdf(x) = (1/√(2 * π * σ²)) * exp(- (x - μ)²/(2 * σ²))
