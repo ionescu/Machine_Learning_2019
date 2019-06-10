@@ -14,7 +14,7 @@ Bayesian networks
 
 === Joint probability distributions
 
-The mathematical model of probability consists of a triple ```(Ω, Event, p)```{.haskell} as in the previous lecture.  Very frequently, however, the set of possible outcomes ```Ω```{.haskell} has the structure of a *cartesian product*, i.e., a tuple of possible results.  For instance, the diagnostic problem we discussed last time could also have been modelled by taking ```Omega = (H, R)```{.haskell}, i.e., the set of tuples ```{(healthy, ⊖), (healthy, ⊕), (ill, ⊖), (ill, ⊕)```{.haskell}.
+The mathematical model of probability consists of a triple ```(Ω, Event, p)```{.haskell} as in the previous lecture.  Very frequently, however, the set of possible outcomes ```Ω```{.haskell} has the structure of a *cartesian product*, i.e., a tuple of possible results.  For instance, the diagnostic problem we discussed last time could also have been modelled by taking ```Ω = (H, R)```{.haskell}, i.e., the set of tuples ```{(healthy, ⊖), (healthy, ⊕), (ill, ⊖), (ill, ⊕)```{.haskell}.
 The event "healthy person" would then be described by ```Healthy = {(healthy, ⊖), (healthy, ⊕)}```{.haskell}, etc.
 
 **Exercise**: Define the other events of interest: "ill", "tested positive", "tested negative".
@@ -25,7 +25,7 @@ We can now construct new probability spaces on each component of ```Ω```{.haske
 > pₕ (healthy) = p({(healthy, ⊖), (healthy, ⊕)})
 >              = p (healthy, ⊖) + p (healthy, ⊕)
 
-**Remark**: in general, if ```Ω = (Ω₁, Ω₂, ..., Ωₙ)```{.haskell} and ```ωᵢ ∈ Ωᵢ```{.haskell}, we will use ```p(ω_i)```{.haskell} to denote
+**Remark**: in general, if ```Ω = (Ω₁, Ω₂, ..., Ωₙ)```{.haskell} and ```ωᵢ ∈ Ωᵢ```{.haskell}, we will use ```p(ωᵢ)```{.haskell} to denote
 
 > p(ωᵢ) = p({(x₁, x₂, ..., xₙ) | x₁ ∈ Ω₁, ..., xₙ ∈ Ωₙ, xᵢ = ωᵢ})
 
@@ -76,7 +76,7 @@ A Bayesian network is a graphical device for recording conditional independence 
 
 ![Mitchell, page 186](forestfire.png)
 
-The network is assumed to be constructed in such a way that the probability of an ```ω_i```{.haskell} is conditionally independent of any non-descendants given its parents.
+The network is assumed to be constructed in such a way that the probability of an ```ωᵢ```{.haskell} is conditionally independent of any non-descendants given its parents.
 
 **Example*: In the network above, we have
 
@@ -101,16 +101,16 @@ In this way, the Bayesian network allows us to compute any entry in the joint di
 >   p(campfire ∩ lightning ∩ storm ∩ bustourgroup)
 > =
 >   p(thunder | lightning) * 
->   p(forestfire | campfire ∩ lightning) *
+>   p(forestfire | campfire ∩ lightning ∩ storm) *
 >   p(campfire ∩ lightning ∩ storm ∩ bustourgroup)
 > =
 >   p(thunder | lightning) * 
->   p(forestfire | campfire ∩ lightning) *
+>   p(forestfire | campfire ∩ lightning ∩ storm) *
 >   p(campfire | lightning ∩ storm ∩ bustourgroup) *
 >   p(lightning ∩ storm ∩ bustourgroup)
 > =
 >   p(thunder | lightning) * 
->   p(forestfire | campfire ∩ lightning) *
+>   p(forestfire | campfire ∩ lightning ∩ storm) *
 >   p(campfire | storm ∩ bustourgroup) *
 >   p(lightning | storm) *
 >   p(storm) * p(bustourgroup)

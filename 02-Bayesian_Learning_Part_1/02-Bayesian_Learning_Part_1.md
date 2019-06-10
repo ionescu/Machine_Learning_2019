@@ -113,9 +113,9 @@ The following definition is perhaps the most misunderstood aspect of elementary 
 
 The notation ```p(Y | X)```{.haskell} **is very bad**.  It suggests that ```|```{.haskell} is a set-theoretical operation, just like ```∪```{.haskell} or ```∩```{.haskell}.  After all, ```p```{.haskell} is defined on events, and it seems to be applied to ```Y | X```{.haskell}, which therefore must be an event, hence a subset of ```Ω```{.haskell}.  The notation also suggests a symmetry between ```X```{.haskell} and ```Y```{.haskell} which does not exist: the two events have completely different roles.  The notation used by Kolmogorov in his original publication of 1933 was ```p```{.haskell}$_{X}$```(Y)```{.haskell}.  This makes it clear that we are dealing with **another probability measure**, namely, one that reflects the assumption that ```X```{.haskell} has been realised, and there is no hint of symmetry.  Unfortunately, the inferior notation has been universally adopted, and we have no choice but to follow suit.
 
-**Exercise (the law of total probability)**: Assume that ```B₁, ..., Bₙ```{.haskell} are pairwise disjoint, such that ```p(Bᵢ) ≠ 0```{.haskell} for all ```i```{.haskell}.  Show that
+**Exercise (the law of total probability)**: Assume that ```B₁, ..., Bₙ```{.haskell} are pairwise disjoint, such that ```p(Bᵢ) ≠ 0```{.haskell} for all ```i```{.haskell}.  Let ```B = ⋃ Bᵢ```{.haskell}Show that
 
-> p(A) = p(A | B₁)*p(B₁) + ... + p(A | Bₙ)*p(Bₙ)
+> p(A ∩ B) = p(A | B₁)*p(B₁) + ... + p(A | Bₙ)*p(Bₙ)
 
 Bayesian learning
 -----------------
