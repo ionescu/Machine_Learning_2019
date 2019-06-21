@@ -225,7 +225,7 @@ Backpropagation
 Homework
 ========
 
-Consider a two-layer perceptron as in Figure 1, with ```f(y) = y```{.haskell} (such a perceptron is called *linear*).  Suppose we start with
+Consider a two-layer perceptron as in Figure 1, with ```f(y) = y, f'(y) = 1```{.haskell} (such a perceptron is called *linear*).  Suppose we start with
 
 > v₁₁ = 1, v₁₂ = -1, v₂₁ = -1, v₂₂ = 1, w₁ = 1, w₂ = 2
 
