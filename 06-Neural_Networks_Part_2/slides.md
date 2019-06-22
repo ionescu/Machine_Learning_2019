@@ -230,3 +230,95 @@ Consider a two-layer perceptron as in Figure 1, with ```f(y) = y, f'(y) = 1```{.
 > v₁₁ = 1, v₁₂ = -1, v₂₁ = -1, v₂₂ = 1, w₁ = 1, w₂ = 2
 
 Assume the data is ```([-1, 1], 0)```{.haskell}.  How does the backpropagation algorithm adjust ```v₁₁```{.haskell}?
+
+Other architectures
+===================
+
+- recurrent neural networks (Hopfield 1982, Schmidhubber 1992, others in between)
+
+- convolutional neural networks (partly already Rumelhart et al. 1986)
+
+- capsule networks (Hinton 2017)
+
+
+Recurrent neural networks
+=========================
+
+-  Neurons have a state which is fed back to the input.
+
+-  This is an implementation of memory.
+
+-  RNNs could, in theory, implement any computable function, but in practice are limited.
+
+-  Gradient descent problematic (``vanishing gradient''), leading to LSTM (``Long Short-Term Memory'').
+
+Convolutional neural networks
+=============================
+
+-  Architecture addresses two important problems with traditional feed-forward networks:
+
+  - loss of local or temporal order in inputs
+
+  - combinatorial explosion of weights
+
+Loss of spatial information in perceptrons
+==========================================
+
+!["Linearisation" of an image](conv1.png)
+
+Filters
+=======
+
+![Decomposing an image](conv2.png){ width=80% }
+
+Overlapping filters: stride
+===========================
+
+![An overlapping decomposition](conv3.png)
+
+Convolutional neural networks
+=============================
+
+![Convolutional neural network [^1]](cnn.png)
+
+
+[^1]: Aphex34 \url{https://commons.wikimedia.org/wiki/File:Typical_cnn.png}, \url{https://creativecommons.org/licenses/by-sa/4.0/legalcode}}
+
+
+The surprising success of "deep" networks
+=========================================
+
+-  Two layers of weights are sufficient, but not efficient
+
+-  Surprisingly, *many* layers turn out to be more efficient
+
+-  Pseudo-explanation (Hinton 2005): layers select increasingly  high-level functions
+
+-  A different pseudo-explanation: neurons similar to logic gates.
+
+Training deep networks
+======================
+
+-  The problem with many layers is that training is hard (backprop is NP-complete).
+
+  - CNNs used to decrease the numbers of weights
+
+  - denoising used to extract ``features'' (compress input space)
+
+Pros and cons of deep neural networks
+=====================================
+
+- Pros
+ 
+  - very successful (handwriting recognition, speech recognition, automatic translation, policy functions for reinforcement learning, etc.)
+
+- Cons
+ 
+  - Very opaque
+
+  - Beyond metaphors, not clear why they work (two layers should, e.g., generalise better)
+
+Acknowledgements
+================
+
+Figures on slides *Loss of spatial information*, *Filters*, and *Overlapping filters* by Farah Shamout (Balliol College, Oxford).
