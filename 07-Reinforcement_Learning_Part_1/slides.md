@@ -42,15 +42,15 @@ MENACE
 
 In 1960, Donald Michie invented MENACE (*Matchbox Educable Noughts And
 Crosses Engine*). MENACE is an automated system that learns to play
-optimal tic-tac-toe (noughts and crosses) by playing against itself. It
-is built out of matchboxes, bits of paper, and sugar drops.
+optimal tic-tac-toe (noughts and crosses) by playing against itself or against human opponents. It
+is built out of matchboxes, bits of paper, and sugar drops (or coloured beads).
 
 :::::: {.columns}
 ::: {.column width="49%"}
 ![Donald Michie](michie.jpg)
 :::
 :::{.column width="49%"}
-!["Cip" sugar drops](cip.jpg){ width=66% }
+![MENACE](o.png)
 :::
 ::::::
 
@@ -296,7 +296,7 @@ matchbox system? What is the output?
 
 . . .
 
-> matchboxSystem : Board -> Move
+> matchboxSystem : Board ~> Move
 
 The matchbox system tells us what action to take in a given state. Such
 a function is called a *policy*.
@@ -322,17 +322,17 @@ A policy must have "foresight".
 Policies
 ========
 
-> policy : State -> Action
+> policy : State ~> Action
 
 -   tic-tac-toe: ```State = Board```{.haskell}, ```Action = Move```{.haskell}
 
--   self-driving car: ```State = Sensors```{.haskell}, ```Action = (WheelTurn,
+-   self-driving car: \pause ```State = Sensors```{.haskell}, ```Action = (WheelTurn,
     BrakePress)```{.haskell}
 
--   robot arm: ```State = (BallPos, HandPos)```{.haskell}, ```Action = (ArmTurn,
+-   robot arm: \pause ```State = (BallPos, HandPos)```{.haskell}, ```Action = (ArmTurn,
     FingerMove)```{.haskell}
 
--   emissions barriers: ```State = (EconomyVars, ClimateVars)```{.haskell}, ```Action
+-   emissions barriers: \pause ```State = (EconomyVars, ClimateVars)```{.haskell}, ```Action
     = EmissionLevel```{.haskell}
 
 -   ...
@@ -354,10 +354,10 @@ Policies
 
 - Self-driving cars:
 
-  - Example of a long-term goal in self-driving cars: smooth driving,
+  - Example of a long-term goal in self-driving cars: \pause smooth driving,
     minimise consumption, reach destination quickly.
 
-  - Example of a short-term goal in self-driving cars: turn left to
+  - Example of a short-term goal in self-driving cars: \pause turn left to
     avoid pedestrian.
 
 Policies
@@ -365,19 +365,19 @@ Policies
 
 - Robot arm:
 
-  - Example of a long-term goal in controlling a robot arm: catch the ball.
+  - Example of a long-term goal in controlling a robot arm: \pause catch the ball.
 
-  - Example of a short-term goal in controlling a robot arm: bend the arm.
+  - Example of a short-term goal in controlling a robot arm: \pause bend the arm.
 
 Policies
 ========
 
 - Setting emissions:
 
-  - Example of a long-term goal in setting emissions: keep global warming
+  - Example of a long-term goal in setting emissions: \pause keep global warming
     below 2°C. 
 
-  - Example of a short-term goal in setting emissions: eliminate
+  - Example of a short-term goal in setting emissions: \pause eliminate
     diesel cars.
 
 Matchboxes
@@ -390,7 +390,7 @@ represent?
 
 . . .
 
-> matchbox b : (Board, Move) -> Number
+> matchbox : (Board, Move) -> Number
 
 A matchbox represents the system's current valuation for the various
 possible moves. Bigger values correspond to better moves. The
@@ -401,15 +401,15 @@ matchboxes implement a value function:
 Matchboxes
 ==========
 
-The equivalent of matchboxes in self-driving cars: a function that
+The equivalent of matchboxes in self-driving cars: \pause a function that
 gives the value of various possible actions depending on the sensor
 readings.
 
-The equivalent of matchboxes in controlling a robot arm: a function
+The equivalent of matchboxes in controlling a robot arm: \pause a function
 that gives the value of various possible arm movements depending on
 the position of the ball and of the hand. 
 
-The equivalent of matchboxes in setting emissions: a function that
+The equivalent of matchboxes in setting emissions: \pause a function that
 gives the value of possible emission barriers depending on the state
 of the climate and the state of the economy.
 
@@ -458,28 +458,40 @@ chosen.
 
 > choose : Matchbox ~> Move
 
-Why not just choose the move that has the maximal number of
-representives?
+In general:
+
+> choose : State ~> Action
+
+Why not just choose the action that has the maximal value?
 
 Credit assignment
 =================
 
-When X or O lose a game, all moves that lead to that loss are penalised.
-It is not always easy to assign credit or blame to the individual moves.
+When ```X```{.haskell} or ```O```{.haskell} lose a game, all moves
+that lead to that loss are penalised.  
+
+It is not always easy to assign credit or blame to the individual moves.  
+
 Good moves lead to good results *on average*, not necessarily every
-time. Choosing stochastically reduces the risks of throwing away good
-moves.
+time.
+
+Choosing stochastically reduces the risks of throwing away good moves.
 
 Exploration versus exploitation
 ===============================
 
 Donald Michie's original version added sugar drops to winning moves.
-Realistic examples follow this pattern and "reward" winning moves. This
-raises a problem similar to that of credit assignment: we might reward
-average, or even bad moves. We want to get the rewards promised by
-well-valued moves, but we risk missing even greater rewards if we do not
-try out new moves from time to time. This is known as the problem of
-"exploration versus exploitation".
+
+Realistic examples follow this pattern and "reward" winning moves. 
+
+This raises a problem similar to that of credit assignment: we might
+reward average, or even bad moves.
+
+We want to get the rewards promised by well-valued moves, but we risk
+missing even greater rewards if we do not try out new moves from time
+to time.
+
+This is known as the problem of "exploration versus exploitation".
 
 Summary
 =======
