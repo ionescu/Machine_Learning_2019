@@ -52,7 +52,7 @@ Formalisation of unsupervised learning
 
 - ```perf(t, [img₁, ..., imgₙ]) = sum [correct(t, img₁), ..., correct(t, img₂)] / n```{.haskell}
   
-  - ```correct : (Task, List(Image)) → {1, 2, ..., k}```{.haskell} is "hypothetical"
+  - ```correct : (Task, Image) → {1, 2, ..., k}```{.haskell} is "hypothetical"
 
 Exemplars
 =========
@@ -69,7 +69,7 @@ The data is a distortion of the ideal exemplars, e.g.
 
 > x = (x₁, ..., xₘ) = (ξ₁ + ε₁, ..., ξₘ + εₘ)
 
-where ```εⱼ```{.haskell} is a random variable with mean 0.
+where ```εⱼ```{.haskell} is a random variable (see below) with mean 0.
 
 Thus, if we only had one exemplar, we could reconstruct it by estimating the mean value of the data.
 

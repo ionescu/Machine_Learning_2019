@@ -23,7 +23,7 @@ Unsupervised learning is a form of "learning from experience".  It is related to
 
   - ```perf(t, [img₁, ..., imgₙ]) = sum [correct(t, img₁), ..., correct(t, img₂)] / n```{.haskell}
   
-  - the function ```correct : (Task, List(Image)) → {1, 2, ..., k}```{.haskell} is a "hypothetical" function, since we might not know the correct classification (as in data mining).
+  - the function ```correct : (Task, Image) → {1, 2, ..., k}```{.haskell} is a "hypothetical" function, since we might not know the correct classification (as in data mining).
   
 A typical situation in which this type of learning can be achieved is when the data can be seen as having been generated from ```k```{.haskell} "ideal" exemplars, distorted in some way.  Unsupervised learning can then be seen as an attempt to reconstruct these exemplars from the data.
 
@@ -81,7 +81,7 @@ Probability theory and statistics are largely the study of random variables.
 
 > E(X) = X(ω₁) * p(ω₁) + X(ω₂) * p(ω₂) + ... + X(ωₙ) * p(ωₙ)
 
-**Remark**: Consider the following game: a random experiment defined by ```Ω, Event, p```{.haskell} is performed many times.  We are given a random variable ```X : Ω → ℝ```{.haskell}.  We attempt, each time, to guess the value of the random variable, and we are rewarded proportionally to the distance between our guess and the actual result.  Then the optimal strategy consists in always naming the expected value of the variable.  Note that this **only the case if the reward is proportional** to the distance between guess and result!  This is typically the case in traditional statistics applications, but **not** in machine learning.
+**Remark**: Consider the following game: a random experiment defined by ```Ω, Event, p```{.haskell} is performed many times.  We are given a random variable ```X : Ω → ℝ```{.haskell}.  We attempt, each time, to guess the value of the random variable, and we are rewarded proportionally to the distance between our guess and the actual result.  Then the optimal strategy consists in always naming the expected value of the variable.  Note that this is **only the case if the reward is proportional** to the distance between guess and result!  This is typically the case in traditional statistics applications, but **not** in machine learning.
 
 **Example**: A football player always shoots penalties either to the right of the goalkeeper, or to his left.  The goalkeeper can minimise the distance to the actual shots by standing still in the middle.  Nevertheless, it might actually be better to dive randomly left or right, and actually catch a ball from time to time.
 
@@ -89,9 +89,9 @@ Probability theory and statistics are largely the study of random variables.
 
 **Notation**:  In many situations, the derived probability space is silently substituted for the initial one.  That is, we consider
 
-> Ω = {x(ω₁), ..., x(ωₙ)}
+> Ω = {X(ω₁), ..., X(ωₙ)}
 
-and even bypass ```ω```{.haskell}s directly, defining ```xᵢ = x(ωᵢ)```{.haskell}:
+and even bypass ```ω```{.haskell}s directly, defining ```xᵢ = X(ωᵢ)```{.haskell}:
 
 > Ω = {x₁, ..., xₙ}
 > p : Event → [0, 1]
