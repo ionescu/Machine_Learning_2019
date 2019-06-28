@@ -24,6 +24,21 @@ Questions?
 Solution to homework from lecture 4
 ===================================
 
+```Ω, Event, p```{.haskell} and ```X```{.haskell} as above.  Consider the following experiment: ```n```{.haskell}  elements ```e₁, ..., eₙ```{.haskell} are drawn independently from ```Ω```{.haskell} and we compute the mean value of ```X```{.haskell} for this sample ```μₛ = (X(e₁) + ... + X(eₙ))/n```{.haskell}.  Then ```μₛ```{.haskell} is a random variable whose probability distribution approaches with increasing ```n```{.haskell} the normal distribution with mean ```μ```{.haskell} and standard deviation ```σ/√(n)```{.haskell}.
+
+The theorem states that ```μₛ```{.haskell} is a random variable.  But a random variable is a function defined in the context of a probability space.  What is that probability space here?  You will need to specify ```Ω', Event', p' : Event' → [0, 1]```{.haskell} and define ```μₛ : Ω' → ℝ```{.haskell} as a function in terms of in terms of the given ```Omega, Event, p```{.haskell}, and ```X```{.haskell}.
+
+Solution to homework from lecture 4
+===================================
+
+> Ω' = (Ω, ..., Ω) = Ωⁿ
+
+> Event' = ℙ (Ω')
+
+> p'(e₁, ..., eₙ) = p(e₁) * ... * p(eₙ)
+
+> μₛ(e₁, ..., eₙ) = (X(e₁) + ... + X(eₙ))/n
+
 Bayesian learning and neural networks
 =====================================
 Given data of the form
@@ -39,7 +54,7 @@ Bayesian learning and neural networks
 
 It can be shown (see slides of Lecture 5) that the most probable hypothesis is, under common circumstances, the one that minimises the *error* (or *loss*) function
 
-> E (w) = Σ (xᵢ - f w (xᵢ))²
+> E (w) = Σ (c(xᵢ) - f w (xᵢ))²
 
 where ```f : Weights -> X -> ℝ```{.haskell} is the function implemented by the network.
 
@@ -86,7 +101,7 @@ For a function ```f : X -> ℝ```{.haskell} where ```X ⊆ ℝⁿ```{.haskell}, 
 
 > ∇ f (x) = [D₁ f (x), ..., Dₙ f (x)]
 
-where we use ```Dᵢ f (x)```{.haskell} instead of the more frequent ```δ f (x) / δ xᵢ```{.haskell}
+where we use ```Dᵢ f (x)```{.haskell} instead of the more frequent ```∂ f (x) / ∂ xᵢ```{.haskell}
 
 ```∇ f (x)```{.haskell} points towards the direction of steepest increase in ```f```{.haskell} at ```x```{.haskell}.
 
@@ -105,7 +120,7 @@ So if we move in the direction ```[-2, -4]```{.haskell} we should see an increas
 
 We now move to ```(2, 4)```{.haskell} and start again, perhaps choosing a different step size (e.g., ```0.9```{.haskell}).
 
-This procedure is a variant of *gradient descent*.  In "real" gradient descent, the step size ```η```{.haskell}is chosen to minimise
+This procedure is a variant of *gradient descent*.  In "real" gradient descent, the step size ```η```{.haskell} is chosen to minimise
 
 > f(x - η * D₁ f (x, y), y - η * D₂ f (x, y))
 
@@ -133,7 +148,7 @@ Because ```perceptron ([w₁,..., wₙ], θ) : ℝⁿ -> {-1, 1}```{.haskell} is
 We can approximate the step function required by ```perceptron```{.haskell} with a differentiable function.  For example:
 
 > perceptron ([w₁,..., wₙ], θ) [x₁, ..., xₙ] = σ(s)
->  where s     =  w₁*x₁ + ... + wₙ * xₙ
+>  where s     =  w₁*x₁ + ... + wₙ * xₙ - θ
 >        σ(y)  =  1 / 1 + exp(-y)
 
 Note that this scales the output to ```[0, 1]```{.haskell}.
@@ -146,7 +161,7 @@ Gradient descent and perceptrons
 More generally
 
 > perceptron ([w₁,..., wₙ], θ) [x₁, ..., xₙ] = f(s)
->  where s     =  w₁*x₁ + ... + wₙ * xₙ
+>  where s     =  w₁*x₁ + ... + wₙ * xₙ - θ
 >        f(y)  =  ...
 
 where ```f```{.haskell} is some nicely differentiable function.
@@ -216,11 +231,11 @@ But how can we compute, e.g., ```D₃ E(ws, vs)```{.haskell}?
 Backpropagation
 ===============
 
-> D₃ E(ws, vs) = D₃ (t - per ws [y₁, y₂])²
->              = D₁ E(ws, vs) * D₁ y₁ 
->              = D₁ E(ws, vs) * D₁ f(z)
->              = D₁ E(ws, vs) * f'(z) * D₁ z
->              = D₁ E(ws, vs) * f'(z) * x₁
+> D₃ E(ws, vs) = D₃ (t - per ws [y₁(v₁₁, v₂₁), y₂(v₁₂, v₂₂)])²
+>              = D₃ E(ws, y₁, y₂) * D₁ y₁ 
+>              = D₃ E(ws, y₁, y₂) * D₁ f(z)
+>              = D₃ E(ws, y₁, y₂) * f'(z) * D₁ z
+>              = D₃ E(ws, y₁, y₂) * f'(z) * x₁
 
 Homework
 ========
