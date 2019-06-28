@@ -83,7 +83,7 @@ McCulloch & Pitts
 
  > "neural events and the relations among them can be treated by means of propositional logic"
 
-- The MC & P neuron had a number of boolean inputs, some positive and others negative.  The neuron was activated if the number of active positive inputs was greater than the number of active negative inputs plus a "threshold":
+- The MC & P neuron had a number of boolean inputs, some positive and others negative.  The neuron was activated if sufficiently many inputs were activated (as specified by a "threshold" parameter), provided that *no* inhibiting connections were activated:
 
 > mc_p_neuron : ℕ -> ({0, 1}ⁿ, {0, 1}ᵐ) -> {0, 1}
 > mc_p_neuron θ (pos, neg) = if sum neg > 0 then 0
@@ -127,7 +127,7 @@ Perceptrons
 
 - A perceptron had real-valued inputs and binary outputs.  The output was a step function of the weighted sum of these inputs
 
-> perceptron : (ℝⁿ, ℝ) -> ℝⁿ -> {0, 1}
+> perceptron : (ℝⁿ, ℝ) -> ℝⁿ -> {-1, 1}
 > perceptron ([w₁,..., wₙ], θ) [x₁, ..., xₙ] = if s ≥ θ then 1 
 >                                                      else -1
 >  where s = w₁*x₁ + ... + wₙ * xₙ
