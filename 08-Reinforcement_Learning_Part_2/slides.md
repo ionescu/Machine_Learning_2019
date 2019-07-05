@@ -24,6 +24,21 @@ Questions?
 Solution to homework from lecture 7
 ===================================
 
+> y₁(v₁₁, v₂₁) = f(x₁*v₁₁ + x₂*v₂₁)    = -2
+> y₂(v₁₁, v₂₁) = f(x₁*v₁₂ + x₂*v₂₂)    =  2
+> o(w₁, w₂, y₁, y₂) = f(y₁*w₁ + y₂*w₂) =  2
+> E (w₁, w₂, v₁₁, ...) = (t - o)²
+
+> ∂ E / ∂ v₁₁ = E'(o) * ∂ o / ∂ v₁₁
+>             = 2*(t - o)*(-1) * ∂ o / ∂ v₁₁
+>             = 2*(-2)*(-1)*f'(z)*∂ g / ∂ v₁₁
+>             = 4*1*∂ (y₁*w₁ + y₂*w₂) / ∂ v₁₁
+>             = 4 * ∂ (y₁*w₁ + y₂*w₂) / ∂ y₁ * ∂ y₁ / ∂ v₁₁
+>             = 4 * w₁ * f'(z) * ∂ (x₁*v₁₁ + x₂*v₂₁) / ∂ v₁₁
+>             = 4 * x₁ = -4
+
+
+
 \      
 ===================================
 
@@ -163,16 +178,41 @@ Choose ```pol(s)```{.haskell} that maximises
 
 where ```sys : (State, Action) ~> State```{.haskell} is the function that tells us what happens depending on the current state and chosen action.
 
+Review
+======
+
+Ingredients:
+
+> sys : (State, Action) -> State
+> rew : (State, Action) -> ℝ
+> pol : State -> Action
+> s₀ ∈ State -- given
+
+Problem: Find ```pol```{.haskell} that maximises ```Σ₀ⁿ rew(sᵢ, pol(sᵢ))```{.haskell}, where
+
+```s```{.haskell}$_{\tiny{\verb|i+1|}}$ ```= sys(sᵢ, aᵢ)```{.haskell}
+
+Value function
+==============
+
+> Val : ℕ -> State -> ℝ
+
+> Valᵢ(s) = maxₚₒₗ Σᵢⁿ rew(sᵢ, pol(sᵢ))
+
+Note:
+
+```Val₀(s₀)```{.haskell} is the maximal value for the entire problem.
+
 Bellman equation
 ================
 
 If ```pol(s) = aᵒᵖᵗ```{.haskell} the optimal action in state ```s```{.haskell}, then \
 
-> Val(s) = Rew(s, aᵒᵖᵗ) + Val(sys(s, aᵒᵖᵗ)) 
+```Valᵢ(s) = Rew(s, aᵒᵖᵗ) + Val```{.haskell}$_{\tiny{\verb|i+1|}}$```(sys(s, aᵒᵖᵗ))```{.haskell}
 
 Therefore 
 
-> Val(s) = maxₐ (Rew(s, a) + Val(sys(s, a))) 
+```Valᵢ(s) = maxₐ (Rew(s, a) + Val```{.haskell}$_{\tiny{\verb|i+1|}}$```(sys(s, a)))```{.haskell}
 
 This is called *Bellman's equation*.
 
@@ -792,20 +832,33 @@ Discount factors
 
 In this setting, we maximise the sum of rewards. Problem: if the number
 of steps is large, the values become difficult to estimate (huge
-absolute value). 
+absolute value).  Moreover, in many situations we need to operate with *infinite horizons*.
 
-To alleviate this problem, we introduce a *discount
+To deal with this problem, we introduce a *discount
 factor*: ```0 < β < 1```{.haskell} 
 
 Instead of maximising
 
-> Rew(s₀, a₀) + Rew(s₁, a₁) + Rew(s₂, a₂) + ... 
+> Rew(s₀, pol(s₀)) + Rew(s₁, pol(s₁)) + Rew(s₂, pol(s₂)) + ... 
 
 we maximise
 
-> Rew(s₀, a₀) + β * Rew(s₁, a₁) + β² * Rew(s₂, a₂) + ... 
+> Rew(s₀, pol(s₀)) + β*Rew(s₁, pol(s₁)) + β²*Rew(s₂, pol(s₂)) + ... 
 
-where ```s```{.haskell}$_{t+1}$ ```= sys(sₜ, pol(sₜ))```{.haskell}
+where ```s```{.haskell}$_{\tiny{\verb|t+1|}}$ ```= sys(sₜ, pol(sₜ))```{.haskell}
+
+Value function
+==============
+
+If we have an infinite horizon, the value function is *stationary*:
+
+```Vᵢ(s) = maxₚₒₗ Σᵢ```$^{\tiny{\infty}}$ ```rew(sₜ, pol(sₜ))```{.haskell} where
+
+> sᵢ = s
+
+```s```{.haskell}$_{\tiny{\verb|t+1|}}$ ```= sys(sₜ, pol(sₜ))```{.haskell}
+
+This is independent of ```i```{.haskell}!
 
 Bellman's equation
 ==================
@@ -965,11 +1018,7 @@ Q-learning in action
       \end{center}
     \end{column}
     \begin{column}{0.35\textwidth}
-      $Q(s, \leftarrow) = -10$
-
       $Q(s, \downarrow) = -8$
-
-      $Q(s, \rightarrow) = -9$
     \end{column}
   \end{columns}
 
@@ -993,7 +1042,40 @@ Q-learning in action
           \node at (2.5, 5.5) {s};
           \node at (2.5, 4.5) {s'};
 
-          \draw[fill=blue,fill opacity=0.5] (2.5, 4.5) circle [radius=0.5];\pause
+          \draw[fill=blue,fill opacity=0.5] (2.5, 4.5) circle [radius=0.5];
+          
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+    \begin{column}{0.35\textwidth}
+      $Q(s, \downarrow) = -8$
+
+      $Rew(s, \downarrow) = -1$
+      
+    \end{column}
+  \end{columns}
+
+Q-learning in action
+====================
+
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \begin{center}
+        \begin{tikzpicture}
+          \draw (0, 0) grid (6, 6);
+          \fill (1, 4) rectangle (2, 5);
+          \fill (1, 3) rectangle (2, 4);
+          \fill (1, 2) rectangle (2, 3);
+          \fill (2, 1) rectangle (3, 2);
+          \fill (3, 1) rectangle (4, 2);
+          \fill (3, 3) rectangle (4, 4);
+          \fill (4, 3) rectangle (5, 4);
+
+          \fill[orange] (4, 4) rectangle (5, 5);
+          \node at (2.5, 5.5) {s};
+          \node at (2.5, 4.5) {s'};
+
+          \draw[fill=blue,fill opacity=0.5] (2.5, 4.5) circle [radius=0.5];
           \draw [->, red, ultra thick] (2.5, 4.5) -- (1.5, 4.5);
           \draw [->, red, ultra thick] (2.5, 4.5) -- (3.5, 4.5);
           \draw [->, red, ultra thick] (2.5, 4.5) -- (2.5, 5.5);
@@ -1006,7 +1088,7 @@ Q-learning in action
       $Q(s, \downarrow) = -8$
 
       $Rew(s, \downarrow) = -1$
-
+      
       $Q(s', \leftarrow) = -\infty$
 
       $Q(s', \downarrow) = -8$
@@ -1014,7 +1096,7 @@ Q-learning in action
       $Q(s', \rightarrow) = -5$
 
       $Q(s', \uparrow) = -10$
-
+      
     \end{column}
   \end{columns}
 
@@ -1047,11 +1129,11 @@ Q-learning in action
     \begin{column}{0.35\textwidth}
       $Q(s, \downarrow) = -8$
 
-      $Rew(s, \downarrow) = -7$
+      $Rew(s, \downarrow) = -1$
 
       $Val(s') = max (-\infty, -8, -5, -10)$
 
-      $Rew(s, \downarrow) + \beta Val(s') = -6$
+      $Rew(s, \downarrow) + \beta Val(s') = -1 + 1 * (-5) = -6$
     \end{column}
   \end{columns}
 
@@ -1112,3 +1194,5 @@ General Intelligence? Chris Watkins
 
  > I have long felt the standard model of RL is deceptively attractive,
  > but limited.
+
+
