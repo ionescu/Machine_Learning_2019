@@ -190,7 +190,7 @@ Ingredients:
 
 Problem: Find ```pol```{.haskell} that maximises ```Σ₀ⁿ rew(sᵢ, pol(sᵢ))```{.haskell}, where
 
-```s```{.haskell}$_{\tiny{\verb|i+1|}}$ ```= sys(sᵢ, aᵢ)```{.haskell}
+```s```{.haskell}$_{\tiny{\verb|i+1|}}$ ```= sys(sᵢ, pol(sᵢ))```{.haskell}
 
 Value function
 ==============
@@ -852,7 +852,7 @@ Value function
 
 If we have an infinite horizon, the value function is *stationary*:
 
-```Vᵢ(s) = maxₚₒₗ Σᵢ```$^{\tiny{\infty}}$ ```rew(sₜ, pol(sₜ))```{.haskell} where
+```Vᵢ(s) = maxₚₒₗ Σᵢ```$^{\tiny{\infty}}$ ```βᵗ*rew(sₜ, pol(sₜ))```{.haskell} where
 
 > sᵢ = s
 
@@ -1171,6 +1171,19 @@ Q-learning in action
       $Q(s, \downarrow) \leftarrow -8 + \delta (-6 - (-8)) = -6$
     \end{column}
   \end{columns}
+
+Homework
+========
+
+Solve exercise ```13.2```{.haskell}, point ```a)```{.haskell}, from Mitchell (page 388).  See next slide.
+
+This homework is optional, you only need to hand it in if you haven't already passed four assignments.
+
+Mitchell uses slightly different notations:
+
+```V```{.haskell}$^{{\tiny *}}$```(s)= Val(s)```{.haskell}
+
+> γ = β
 
 Homework
 ========
