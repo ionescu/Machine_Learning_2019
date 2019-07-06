@@ -1172,6 +1172,10 @@ Q-learning in action
     \end{column}
   \end{columns}
 
+Homework
+========
+
+![Mitchell, 13.2 (a).](13.2.png){ height=90% }
 
 Stochastic systems
 ==================
