@@ -21,7 +21,7 @@ Administrative
 Questions?
 ==========
 
-Solution to homework from lecture 7
+Solution to homework from lecture 6
 ===================================
 
 > y₁(v₁₁, v₂₁) = f(x₁*v₁₁ + x₂*v₂₁)    = -2
@@ -37,8 +37,61 @@ Solution to homework from lecture 7
 >             = 4 * w₁ * f'(z) * ∂ (x₁*v₁₁ + x₂*v₂₁) / ∂ v₁₁
 >             = 4 * x₁ = -4
 
+Solutions to homework from lecture 7
+====================================
 
+ > A smart traffic control system can adjust the delays of traffic
+   lights in order to alleviate bottlenecks in the flow of vehicles
+   and ensure a smooth driving experience. In order to achieve this,
+   the system must anticipate how the delays will influence the
+   evolution of the traffic pattern.  We want to train this system
+   using an idealised version of the matchbox system.
+          
+We need to determine what actions to take depending on the
+configuration of traffic.  If a sequence of actions leads to delays
+and traffic jams, we can decrease the likelihood of choosing those
+actions in the future.
 
+Solutions to homework from lecture 7 (continued)
+====================================
+
+ > What are the states? What are the actions (sugar drops)?
+
+A state is a configuration of the traffic system: positions of cars on
+the grid, their speeds, the state of the traffic lights, etc.
+
+The actions are traffic light delays, so the sugar drops would stand
+for the possible traffic light delays.  We would need many as many
+colors as possible delays (e.g., a colour for each of ```10, 20, 30,
+40, 50```{.haskell} seconds).
+
+Solutions to homework from lecture 7 (continued)
+====================================
+
+ > What is the equivalent of a matchbox for this system?
+
+A matchbox would have as label a configuration of the traffic system.
+
+ > What could be a long-term goal for this system? What could be a
+    short-term goal of the system?
+
+A long-term goal would be to ensure a smooth driving experience for
+all participants.  A short-term goal would be to eliminate a current
+traffic jam.
+
+Solutions to homework from lecture 7 (continued)
+====================================
+
+ > How would the updating process work (how can bad actions be
+    eliminated)?
+    
+We need a measure of the quality of traffic, for example a weighted
+sum that gives low scores to many stops, to time spent in traffic,
+build-up of traffic jams, etc.  We can record the actions taking during
+a certain amount of time, such as an hour, or a day, and if the quality
+measure is not good enough, we eliminate the actions we have taken
+during this time.
+    
 \      
 ===================================
 
